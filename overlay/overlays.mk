@@ -7,4 +7,5 @@
 # Overlays
 PRODUCT_PACKAGES += \
     AtomXFrameworksOverlay \
-    AtomXSystemUIOverlay
+    AtomXSystemUIOverlay \
+    AtomXLauncherOverlay
