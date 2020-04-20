@@ -18,6 +18,7 @@ $(foreach v,$(EXPORT_TO_SOONG),$(eval $(call addVar,$(v))))
 SOONG_CONFIG_NAMESPACES += atomxGlobalVars
 SOONG_CONFIG_atomxGlobalVars += \
     needs_camera_boottime \
+    powershare_node \
     target_camera_package_name \
     target_init_vendor_lib \
     target_ld_shim_libs \
@@ -30,6 +31,7 @@ TARGET_SURFACEFLINGER_UDFPS_LIB ?= surfaceflinger_udfps_lib
 
 # Soong value variables
 SOONG_CONFIG_atomxGlobalVars_needs_camera_boottime := $(TARGET_CAMERA_BOOTTIME_TIMESTAMP)
+SOONG_CONFIG_atomxGlobalVars_powershare_node := $(TARGET_POWERSHARE_NODE)
 SOONG_CONFIG_atomxGlobalVars_target_camera_package_name := $(TARGET_CAMERA_PACKAGE_NAME)
 SOONG_CONFIG_atomxGlobalVars_target_init_vendor_lib := $(TARGET_INIT_VENDOR_LIB)
 SOONG_CONFIG_atomxGlobalVars_target_ld_shim_libs := $(subst $(space),:,$(TARGET_LD_SHIM_LIBS))
