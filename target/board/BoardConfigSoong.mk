@@ -2,6 +2,8 @@
 # Documentation here:
 # https://github.com/LineageOS/android_build_soong/commit/8328367c44085b948c003116c0ed74a047237a69
 
+# AtomX Variable
+
 SOONG_CONFIG_NAMESPACES += atomxVarsPlugin
 
 SOONG_CONFIG_atomxVarsPlugin :=
@@ -61,3 +63,8 @@ GESTURE_SOONG_VARS := \
     TARGET_SINGLE_TAP_TO_WAKE_NODE
 
 $(foreach v,$(GESTURE_SOONG_VARS),$(eval $(call add-gesturevar-if-exist,$(v))))
+
+# Qualcomm variables
+SOONG_CONFIG_NAMESPACES += aosp_vs_qva
+SOONG_CONFIG_aosp_vs_qva += aosp_or_qva
+SOONG_CONFIG_aosp_vs_qva_aosp_or_qva := qva
