@@ -1,0 +1,20 @@
+//
+// Copyright (C) 2022 The AtomX Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+aidl_interface {
+    name: "vendor.atomx.power",
+    vendor_available: true,
+    srcs: [
+        "vendor/atomx/power/*.aidl",
+    ],
+    stability: "vintf",
+    backend: {
+        java: {
+            enabled: false,
+        },
+    },
+    versions: ["1"],
+}

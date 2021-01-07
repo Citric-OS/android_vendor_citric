@@ -1,0 +1,10 @@
+#
+# Copyright (C) 2022 The AtomX Project
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+service vendor.power-atomx /vendor/bin/hw/vendor.atomx.power-service
+    class hal
+    user system
+    group system input

@@ -19,6 +19,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     ThemePicker
 
+# Gestures
+PRODUCT_PACKAGES += \
+    vendor.atomx.power-service
+
 # QTI VNDK Framework Detect
 PRODUCT_PACKAGES += \
     libvndfwk_detect_jni.qti \
