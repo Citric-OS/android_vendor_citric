@@ -12,3 +12,5 @@ function clomerge()
     T=$(gettop)
     python3 $T/vendor/atomx/build/tools/merge-clo.py $target_branch
 }
+
+export SKIP_ABI_CHECKS="true"
