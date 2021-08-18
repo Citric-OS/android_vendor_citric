@@ -17,3 +17,6 @@ $(call inherit-product, vendor/qcom/sdclang/config/SnapdragonClang.mk)
 $(call inherit-product, vendor/google/gms/config.mk)
 $(call inherit-product-if-exists, vendor/google/modules/build/mainline_modules_s.mk)
 $(call inherit-product, vendor/google/pixel/config.mk)
+
+# Move Wi-Fi modules to vendor
+PRODUCT_VENDOR_MOVE_ENABLED := true
