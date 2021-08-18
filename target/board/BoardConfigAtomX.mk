@@ -6,3 +6,6 @@
 
 # Include our Qualcomm Board configuration.
 include device/qcom/common/BoardConfigQcom.mk
+
+# Kernel configuration.
+include vendor/atomx/target/board/BoardConfigKernel.mk
