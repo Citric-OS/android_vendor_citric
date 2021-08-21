@@ -13,3 +13,6 @@ include device/qcom/common/BoardConfigQcom.mk
 
 # Kernel configuration.
 include vendor/atomx/target/board/BoardConfigKernel.mk
+
+# Soong
+include vendor/atomx/target/board/BoardConfigSoong.mk
