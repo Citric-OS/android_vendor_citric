@@ -92,7 +92,7 @@ cc_binary {
         "libbase",
         "libbinder_ndk",
         "liblog",
-        "vendor.atomx.power-ndk_platform",
+        "vendor.atomx.power-V1-ndk_platform",
     ],
     srcs: [
         "PowerFeature.cpp",
