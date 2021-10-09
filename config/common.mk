@@ -44,6 +44,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/citric/prebuilt/common/etc/init.local.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/init.citric.rc
 
+# Enable one-handed mode
+PRODUCT_PRODUCT_PROPERTIES += \
+    ro.support_one_handed_mode=true
+
 # Backup Tool
 PRODUCT_COPY_FILES += \
     vendor/citric/build/tools/backuptool.sh:install/bin/backuptool.sh \
