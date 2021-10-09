@@ -111,6 +111,9 @@ include vendor/citric/config/bootanimation.mk
 # Fonts
 include vendor/citric/config/fonts.mk
 
+# Google Apps
+include vendor/citric/config/gapps.mk
+
 # Packages
 include vendor/citric/config/packages.mk
 
