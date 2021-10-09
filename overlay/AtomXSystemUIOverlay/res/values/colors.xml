@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+** Copyright (C) 2022 The AtomX Project
+**
+** SPDX-License-Identifier: Apache-2.0
+*/
+-->
+<resources>
+    <color name="global_actions_lite_emergency_background">@*com.android.systemui:color/global_actions_lite_button_background</color>
+    <color name="global_actions_lite_emergency_icon">@*com.android.systemui:color/GM2_red_200</color>
+</resources>
