@@ -24,9 +24,8 @@ PRODUCT_PACKAGES += \
     messaging \
     SimpleGallery \
     Stk \
-    stats \
     ThemePicker \
-    ArrowThemesStub \
+    CitricThemesStub \
     OmniJaws \
     WeatherIcons
 

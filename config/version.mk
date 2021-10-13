@@ -1,70 +1,47 @@
-# Copyright (C) 2016 The Pure Nexus Project
-# Copyright (C) 2016 The JDCTeam
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Versioning System
+CITRIC_CODENAME := Slimeade
+CITRIC_MAJOR_VERSION := v1.0
+CITRIC_RELEASE_VERSION := Alpha
+CITRIC_BUILD_TYPE ?= UNOFFICIAL
+CITRIC_BUILD_VARIANT := VANILLA
 
-ARROW_MOD_VERSION = v12.0
-ARROW_BUILD_TYPE := UNOFFICIAL
-ARROW_BUILD_ZIP_TYPE := VANILLA
-
-ifeq ($(ARROW_BETA),true)
-    ARROW_BUILD_TYPE := BETA
+# Gapps
+ifeq ($(WITH_GAPPS),true)
+CITRIC_BUILD_VARIANT := GAPPS
 endif
 
-ifeq ($(ARROW_GAPPS), true)
-    $(call inherit-product, vendor/gapps/common/common-vendor.mk)
-    ARROW_BUILD_ZIP_TYPE := GAPPS
-endif
-
-CURRENT_DEVICE=$(shell echo "$(TARGET_PRODUCT)" | cut -d'_' -f 2,3)
-
-ifeq ($(ARROW_OFFICIAL), true)
-   LIST = $(shell cat infrastructure/devices/arrow.devices | awk '$$1 != "#" { print $$2 }')
-    ifeq ($(filter $(CURRENT_DEVICE), $(LIST)), $(CURRENT_DEVICE))
-      IS_OFFICIAL=true
-      ARROW_BUILD_TYPE := OFFICIAL
-
-PRODUCT_PACKAGES += \
-    Updater
-
-    endif
-    ifneq ($(IS_OFFICIAL), true)
-       ARROW_BUILD_TYPE := UNOFFICIAL
-       $(error Device is not official "$(CURRENT_DEVICE)")
+# CitricOS Release
+ifeq ($(CITRIC_BUILD_TYPE), OFFICIAL)
+  OFFICIAL_DEVICES = $(shell cat vendor/citric/citric.devices)
+  FOUND_DEVICE =  $(filter $(CITRIC_BUILD), $(OFFICIAL_DEVICES))
+    ifeq ($(FOUND_DEVICE),$(CITRIC_BUILD))
+      CITRIC_BUILD_TYPE := OFFICIAL
+    else
+      CITRIC_BUILD_TYPE := UNOFFICIAL
+      $(error Device is not official "$(CITRIC_BUILD)")
     endif
 endif
 
-ifeq ($(ARROW_COMMUNITY), true)
-   LIST = $(shell cat infrastructure/devices/arrow-community.devices | awk '$$1 != "#" { print $$2 }')
-    ifeq ($(filter $(CURRENT_DEVICE), $(LIST)), $(CURRENT_DEVICE))
-      IS_COMMUNITY=true
-      ARROW_BUILD_TYPE := COMMUNITY
-    endif
-    ifneq ($(IS_COMMUNITY), true)
-       ARROW_BUILD_TYPE := UNOFFICIAL
-       $(error This isn't a community device "$(CURRENT_DEVICE)")
-    endif
-endif
+# System version
+TARGET_PRODUCT_SHORT := $(subst citric_,,$(CITRIC_BUILD_TYPE))
 
-ARROW_VERSION := Arrow-$(ARROW_MOD_VERSION)-$(CURRENT_DEVICE)-$(ARROW_BUILD_TYPE)-$(shell date -u +%Y%m%d)-$(ARROW_BUILD_ZIP_TYPE)
+CITRIC_DATE_YEAR := $(shell date -u +%Y)
+CITRIC_DATE_MONTH := $(shell date -u +%m)
+CITRIC_DATE_DAY := $(shell date -u +%d)
+CITRIC_DATE_HOUR := $(shell date -u +%H)
+CITRIC_DATE_MINUTE := $(shell date -u +%M)
+
+CITRIC_BUILD_DATE := $(CITRIC_DATE_YEAR)$(CITRIC_DATE_MONTH)$(CITRIC_DATE_DAY)-$(CITRIC_DATE_HOUR)$(CITRIC_DATE_MINUTE)
+CITRIC_BUILD_VERSION := $(CITRIC_MAJOR_VERSION)-$(CITRIC_RELEASE_VERSION)
+CITRIC_BUILD_FINGERPRINT := CitricOS/$(CITRIC_MOD_VERSION)/$(TARGET_PRODUCT_SHORT)/$(CITRIC_BUILD_DATE)
+CITRIC_VERSION := CitricOS-$(CITRIC_CODENAME)-$(CITRIC_BUILD_VERSION)-$(CITRIC_BUILD)-$(CITRIC_BUILD_TYPE)-$(CITRIC_BUILD_DATE)
+CITRIC_RELEASE := CitricOS-$(CITRIC_CODENAME)-$(CITRIC_BUILD_VERSION)-$(CITRIC_BUILD)-$(CITRIC_BUILD_TYPE)-$(CITRIC_BUILD_VARIANT)-$(CITRIC_BUILD_DATE)
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-  ro.arrow.version=$(ARROW_VERSION) \
-  ro.arrow.releasetype=$(ARROW_BUILD_TYPE) \
-  ro.arrow.ziptype=$(ARROW_BUILD_ZIP_TYPE) \
-  ro.modversion=$(ARROW_MOD_VERSION)
-
-ARROW_DISPLAY_VERSION := Arrow-$(ARROW_MOD_VERSION)-$(ARROW_BUILD_TYPE)
-
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-  ro.arrow.display.version=$(ARROW_DISPLAY_VERSION)
+  ro.citric.device=$(CITRIC_BUILD) \
+  ro.citric.version=$(CITRIC_VERSION) \
+  ro.citric.build.version=$(CITRIC_BUILD_VERSION) \
+  ro.citric.build.type=$(CITRIC_BUILD_TYPE) \
+  ro.citric.build.variant=$(CITRIC_BUILD_VARIANT) \
+  ro.citric.build.date=$(CITRIC_BUILD_DATE) \
+  ro.citric.build.fingerprint=$(CITRIC_BUILD_FINGERPRINT)

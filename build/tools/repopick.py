@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #
 # Copyright (C) 2013-15 The CyanogenMod Project
+#           (C) 2017    The CitricOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -74,7 +75,6 @@ def fetch_query_via_ssh(remote_url, query):
     else:
         raise Exception('Malformed URI: Expecting ssh://[user@]host[:port]')
 
-
     out = subprocess.check_output(['ssh', '-x', '-p{0}'.format(port), userhost, 'gerrit', 'query', '--format=JSON --patch-sets --current-patch-set', query])
     if not hasattr(out, 'encode'):
         out = out.decode()
@@ -97,7 +97,7 @@ def fetch_query_via_ssh(remote_url, query):
                         }
                     },
                     'commit': {
-                        'parents': [{ 'commit': parent } for parent in patch_set['parents']]
+                        'parents': [{'commit': parent} for parent in patch_set['parents']]
                     },
                 } for patch_set in data['patchSets']},
                 'subject': data['subject'],
@@ -120,12 +120,12 @@ def fetch_query_via_http(remote_url, query):
                 parts = line.rstrip().split("|")
                 if parts[0] in remote_url:
                     auth = requests.auth.HTTPBasicAuth(username=parts[1], password=parts[2])
-        statusCode = '-1'
+        status_code = '-1'
         if auth:
             url = '{0}/a/changes/?q={1}&o=CURRENT_REVISION&o=ALL_REVISIONS&o=ALL_COMMITS'.format(remote_url, query)
             data = requests.get(url, auth=auth)
-            statusCode = str(data.status_code)
-        if statusCode != '200':
+            status_code = str(data.status_code)
+        if status_code != '200':
             #They didn't get good authorization or data, Let's try the old way
             url = '{0}/changes/?q={1}&o=CURRENT_REVISION&o=ALL_REVISIONS&o=ALL_COMMITS'.format(remote_url, query)
             data = requests.get(url)
@@ -151,13 +151,14 @@ def fetch_query(remote_url, query):
     else:
         raise Exception('Gerrit URL should be in the form http[s]://hostname/ or ssh://[user@]host[:port]')
 
+
 if __name__ == '__main__':
-    # Default to ArrowOS Gerrit
-    default_gerrit = 'https://review.arrowos.net'
+    # Default to CitricOS Gerrit
+    default_gerrit = 'https://review.citricos.org'
 
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description=textwrap.dedent('''\
         repopick.py is a utility to simplify the process of cherry picking
-        patches from CyanogenMod's Gerrit instance (or any gerrit instance of your choosing)
+        patches from CitricOS's Gerrit instance (or any gerrit instance of your choosing)
 
         Given a list of change numbers, repopick will cd into the project path
         and cherry pick the latest patch available.
@@ -170,22 +171,31 @@ if __name__ == '__main__':
         The --abandon-first argument, when used in conjunction with the
         --start-branch option, will cause repopick to abandon the specified
         branch in all repos first before performing any cherry picks.'''))
-    parser.add_argument('change_number', nargs='*', help='change number to cherry pick.  Use {change number}/{patchset number} to get a specific revision.')
-    parser.add_argument('-i', '--ignore-missing', action='store_true', help='do not error out if a patch applies to a missing directory')
-    parser.add_argument('-s', '--start-branch', nargs=1, help='start the specified branch before cherry picking')
-    parser.add_argument('-r', '--reset', action='store_true', help='reset to initial state (abort cherry-pick) if there is a conflict')
-    parser.add_argument('-a', '--abandon-first', action='store_true', help='before cherry picking, abandon the branch specified in --start-branch')
-    parser.add_argument('-b', '--auto-branch', action='store_true', help='shortcut to "--start-branch auto --abandon-first --ignore-missing"')
+    parser.add_argument('change_number', nargs='*',
+                        help='change number to cherry pick. Use {change number}/{patchset number} to get a specific revision.')
+    parser.add_argument('-i', '--ignore-missing', action='store_true',
+                        help='do not error out if a patch applies to a missing directory')
+    parser.add_argument('-s', '--start-branch', nargs=1,
+                        metavar='', help='start the specified branch before cherry picking')
+    parser.add_argument('-r', '--reset', action='store_true',
+                        help='reset to initial state (abort cherry-pick) if there is a conflict')
+    parser.add_argument('-a', '--abandon-first', action='store_true',
+                        help='before cherry picking, abandon the branch specified in --start-branch')
+    parser.add_argument('-b', '--auto-branch', action='store_true',
+                        help='shortcut to "--start-branch auto --abandon-first --ignore-missing"')
     parser.add_argument('-q', '--quiet', action='store_true', help='print as little as possible')
     parser.add_argument('-v', '--verbose', action='store_true', help='print extra information to aid in debug')
     parser.add_argument('-f', '--force', action='store_true', help='force cherry pick even if change is closed')
     parser.add_argument('-p', '--pull', action='store_true', help='execute pull instead of cherry-pick')
-    parser.add_argument('-P', '--path', help='use the specified path for the change')
-    parser.add_argument('-t', '--topic', help='pick all commits from a specified topic')
-    parser.add_argument('-Q', '--query', help='pick all commits using the specified query')
-    parser.add_argument('-g', '--gerrit', default=default_gerrit, help='Gerrit Instance to use. Form proto://[user@]host[:port]')
-    parser.add_argument('-e', '--exclude', nargs=1, help='exclude a list of commit numbers separated by a ,')
-    parser.add_argument('-c', '--check-picked', type=int, default=10, help='pass the amount of commits to check for already picked changes')
+    parser.add_argument('-P', '--path', metavar='', help='use the specified path for the change')
+    parser.add_argument('-t', '--topic', metavar='', help='pick all commits from a specified topic')
+    parser.add_argument('-Q', '--query', metavar='', help='pick all commits using the specified query')
+    parser.add_argument('-g', '--gerrit', default=default_gerrit,
+                        metavar='', help='Gerrit Instance to use. Form proto://[user@]host[:port]')
+    parser.add_argument('-e', '--exclude', nargs=1,
+                        metavar='', help='exclude a list of commit numbers separated by a ,')
+    parser.add_argument('-c', '--check-picked', type=int, default=10,
+                        metavar='', help='pass the amount of commits to check for already picked changes')
     args = parser.parse_args()
     if not args.start_branch and args.abandon_first:
         parser.error('if --abandon-first is set, you must also give the branch name with --start-branch')
@@ -245,21 +255,22 @@ if __name__ == '__main__':
     remotes = xml_root.findall('remote')
     default_revision = xml_root.findall('default')[0].get('revision')
 
-    #dump project data into the a list of dicts with the following data:
-    #{project: {path, revision}}
+    # dump project data into the a list of dicts with the following data:
+    # {project: {path, revision}}
 
     for project in projects:
-        name = ("ArrowOS/")+project.get('name')
-        path = project.get('path')
-        revision = project.get('revision')
+        name = project.get('name')
+        # when name and path are equal, "repo manifest" doesn't return a path at all, so fall back to name
+        path = project.get('path', name)
+        revision = project.get('upstream')
         if revision is None:
             for remote in remotes:
                 if remote.get('name') == project.get('remote'):
                     revision = remote.get('revision')
             if revision is None:
-                revision = default_revision
+                revision = project.get('revision', default_revision)
 
-        if not name in project_name_to_data:
+        if name not in project_name_to_data:
             project_name_to_data[name] = {}
         revision = revision.split('refs/heads/')[-1]
         project_name_to_data[name][revision] = path
@@ -398,7 +409,7 @@ if __name__ == '__main__':
             output = output.split()
             if 'Change-Id:' in output:
                 head_change_id = ''
-                for j,t in enumerate(reversed(output)):
+                for j, t in enumerate(reversed(output)):
                     if t == 'Change-Id:':
                         head_change_id = output[len(output) - j]
                         break
@@ -411,7 +422,7 @@ if __name__ == '__main__':
 
         # Print out some useful info
         if not args.quiet:
-            print('--> Subject:       "{0}"'.format(item['subject'].encode('utf-8')))
+            print(u'--> Subject:       "{0}"'.format(item['subject']))
             print('--> Project path:  {0}'.format(project_path))
             print('--> Change number: {0} (Patch Set {1})'.format(item['id'], item['patchset']))
 
@@ -426,9 +437,9 @@ if __name__ == '__main__':
                 print('Trying to fetch the change from GitHub')
 
             if args.pull:
-                cmd = ['git pull --no-edit arrow', item['fetch'][method]['ref']]
+                cmd = ['git pull --no-edit github', item['fetch'][method]['ref']]
             else:
-                cmd = ['git fetch arrow', item['fetch'][method]['ref']]
+                cmd = ['git fetch github', item['fetch'][method]['ref']]
             if args.quiet:
                 cmd.append('--quiet')
             else:
@@ -461,7 +472,7 @@ if __name__ == '__main__':
                 sys.exit(result)
         # Perform the cherry-pick
         if not args.pull:
-            cmd = ['git cherry-pick FETCH_HEAD']
+            cmd = ['git cherry-pick --ff FETCH_HEAD']
             if args.quiet:
                 cmd_out = open(os.devnull, 'wb')
             else:
@@ -481,6 +492,6 @@ if __name__ == '__main__':
                     sys.exit(result)
                 else:
                     print('ERROR: git command failed')
-                sys.exit(result)
+                    sys.exit(result)
         if not args.quiet:
             print('')
