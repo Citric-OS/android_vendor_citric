@@ -1,0 +1,13 @@
+//
+// Copyright (C) 2024 The AtomX Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+android_library {
+    name: "co.atomx.framework",
+    srcs: ["src/**/*.java"],
+    static_libs: [
+        "androidx.preference_preference",
+    ],
+}
