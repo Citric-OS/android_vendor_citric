@@ -52,7 +52,14 @@ PRODUCT_PACKAGES += \
     IconPackRoundedLauncherOverlay \
     IconPackRoundedSettingsOverlay \
     IconPackRoundedSystemUIOverlay \
-    IconPackRoundedThemePickerOverlay
+    IconPackRoundedThemePickerOverlay \
+    IconShapePebbleOverlay \
+    IconShapeRoundedRectOverlay \
+    IconShapeSquareOverlay \
+    IconShapeSquircleOverlay \
+    IconShapeTaperedRectOverlay \
+    IconShapeTeardropOverlay \
+    IconShapeVesselOverlay
 
 PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += vendor/atomx/overlay/static
 PRODUCT_PACKAGE_OVERLAYS += vendor/atomx/overlay/static
