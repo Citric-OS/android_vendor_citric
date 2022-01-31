@@ -10,6 +10,7 @@
 
     <!-- Default Packages -->
     <string name="wallpaper_picker_package" translatable="false">com.android.wallpaper</string>
+    <string name="local_colors_extraction_class" translatable="false">com.android.launcher3.widget.LocalWallpaperColorsExtractor</string>
 
     <!-- Config used to determine if header protection is supported in All Apps -->
     <bool name="config_header_protection_supported">true</bool>
