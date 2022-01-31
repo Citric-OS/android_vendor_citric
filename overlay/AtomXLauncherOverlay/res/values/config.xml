@@ -11,4 +11,7 @@
     <!-- Default Packages -->
     <string name="wallpaper_picker_package" translatable="false">com.android.wallpaper</string>
 
+    <!-- Config used to determine if header protection is supported in All Apps -->
+    <bool name="config_header_protection_supported">true</bool>
+
 </resources>
