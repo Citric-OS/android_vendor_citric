@@ -3,3 +3,6 @@ type pocket_service, system_api_service, system_server_service, service_manager_
 
 # Global Actions
 type custom_globalactions_service, system_api_service, system_server_service, service_manager_type;
+
+# App lock
+type app_lock_service, system_api_service, system_server_service, service_manager_type;
