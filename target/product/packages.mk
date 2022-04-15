@@ -4,6 +4,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# Curl
+PRODUCT_PACKAGES += \
+    curl
+
 # HIDL
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
