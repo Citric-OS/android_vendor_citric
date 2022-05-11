@@ -27,6 +27,9 @@ $(call inherit-product, vendor/google/gms/config.mk)
 $(call inherit-product-if-exists, vendor/google/modules/build/mainline_modules_s.mk)
 $(call inherit-product, vendor/google/pixel/config.mk)
 
+# Include Overlay makefile
+$(call inherit-product, vendor/atomx/overlay/overlays.mk)
+
 # Include Packages makefile
 $(call inherit-product, vendor/atomx/target/product/packages.mk)
 
