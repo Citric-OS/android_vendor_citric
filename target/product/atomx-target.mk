@@ -7,6 +7,9 @@
 # AtomX Versioning
 $(call inherit-product, vendor/atomx/target/product/version.mk)
 
+# Bootanimation
+$(call inherit-product, vendor/atomx/bootanimation/bootanimation.mk)
+
 # Don't dexpreopt prebuilts. (For GMS).
 DONT_DEXPREOPT_PREBUILTS := true
 
