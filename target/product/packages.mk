@@ -8,6 +8,12 @@
 PRODUCT_PACKAGES += \
     curl
 
+# Face Unlock
+ifeq ($(TARGET_FACE_UNLOCK_SUPPORTED),true)
+PRODUCT_PACKAGES += \
+    FaceUnlockService
+endif
+
 # HIDL
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
