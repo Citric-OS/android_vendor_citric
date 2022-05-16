@@ -13,6 +13,13 @@ $(call inherit-product, vendor/atomx/bootanimation/bootanimation.mk)
 # Don't dexpreopt prebuilts. (For GMS).
 DONT_DEXPREOPT_PREBUILTS := true
 
+# Face Unlock
+TARGET_FACE_UNLOCK_SUPPORTED ?= true
+ifeq ($(TARGET_FACE_UNLOCK_SUPPORTED),true)
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.biometrics.face.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.hardware.biometrics.face.xml
+endif
+
 # Filesystem
 TARGET_FS_CONFIG_GEN += vendor/atomx/target/config/config.fs
 
