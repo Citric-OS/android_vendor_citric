@@ -34,8 +34,7 @@ $(call inherit-product, device/qcom/common/common.mk)
 $(call inherit-product, vendor/qcom/sdclang/config/SnapdragonClang.mk)
 
 # Include GMS, Modules and Pixel features
-$(call inherit-product, vendor/google/gms/config.mk)
-$(call inherit-product, vendor/google/pixel/config.mk)
+$(call inherit-product, vendor/google/gms/products/gms.mk)
 
 ifeq ($(TARGET_FLATTEN_APEX), false)
 $(call inherit-product-if-exists, vendor/google/modules/build/mainline_modules_s.mk)
