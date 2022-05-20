@@ -74,6 +74,10 @@ PRODUCT_DEX_PREOPT_DEFAULT_COMPILER_FILTER := everything
 PRODUCT_COPY_FILES += \
     vendor/atomx/target/config/permissions/privapp-permissions-hotword.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-hotword.xml
 
+# Pre-optimization
+PRODUCT_DEXPREOPT_SPEED_APPS += \
+    SystemUI
+
 # Sensitive phone numbers and APN configurations
 PRODUCT_COPY_FILES += \
     vendor/atomx/target/config/apns-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml \
