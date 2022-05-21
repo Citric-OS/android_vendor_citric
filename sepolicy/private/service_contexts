@@ -1,3 +1,6 @@
+# App lock
+app_lock                                    u:object_r:app_lock_service:s0
+
 # The AtomX Project Power HAL
 vendor.atomx.power.IPowerFeature/default    u:object_r:hal_power_service:s0
 
