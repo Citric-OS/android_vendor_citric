@@ -32,6 +32,7 @@ PRODUCT_SYSTEM_EXT_PROPERTIES += \
 
 # Disable blur on app-launch
 PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    debug.sf.frame_rate_multiple_threshold=60 \
     ro.launcher.blur.appLaunch=0
 
 # Disable RescueParty due to high risk of data loss
