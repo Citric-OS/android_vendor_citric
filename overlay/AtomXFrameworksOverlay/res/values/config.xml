@@ -21,7 +21,7 @@
     <dimen name="config_buttonCornerRadius">4dip</dimen>
 
     <!-- Corner radius of system dialogs -->
-    <dimen name="config_dialogCornerRadius">8dip</dimen>
+    <dimen name="config_dialogCornerRadius">28dip</dimen>
 
     <!-- The amount to scale fullscreen snapshots for Overview and snapshot starting windows. -->
     <item type="dimen" name="config_highResTaskSnapshotScale">0.8</item>
