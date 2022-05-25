@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+** Copyright (C) 2022 The AtomX Project
+**
+** SPDX-License-Identifier: Apache-2.0
+*/
+-->
+<resources>
+
+    <!-- Manrope overlay -->
+    <string name="font_manrope_overlay" translatable="false">Manrope</string>
+
+</resources>
