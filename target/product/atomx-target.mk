@@ -20,6 +20,11 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.biometrics.face.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.hardware.biometrics.face.xml
 endif
 
+# Fonts
+PRODUCT_COPY_FILES += \
+    $(call find-copy-subdir-files,*,vendor/atomx/prebuilts/fonts/,$(TARGET_COPY_OUT_PRODUCT)/fonts) \
+    vendor/atomx/target/config/fonts_customization.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/fonts_customization.xml
+
 # Filesystem
 TARGET_FS_CONFIG_GEN += vendor/atomx/target/config/config.fs
 

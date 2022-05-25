@@ -11,4 +11,10 @@ PRODUCT_PACKAGES += \
     AtomXSettingsOverlay \
     AtomXSettingsProviderOverlay \
     AtomXSystemUIOverlay \
+    FontGoogleSansLatoOverlay \
+    FontHarmonySansOverlay \
+    FontInterOverlay \
+    FontManropeOverlay \
+    FontRobotoOverlay \
+    FontUrbanistOverlay \
     PixelLauncherIconsOverlay
