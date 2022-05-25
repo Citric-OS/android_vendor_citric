@@ -11,5 +11,4 @@ PRODUCT_PACKAGES += \
     AtomXSettingsOverlay \
     AtomXSettingsProviderOverlay \
     AtomXSystemUIOverlay \
-    AtomXLauncherOverlay \
     PixelLauncherIconsOverlay
