@@ -252,8 +252,9 @@ if __name__ == '__main__':
     #{project: {path, revision}}
 
     for project in projects:
-        name = project.get('name')
-        path = project.get('path')
+        name_atomx =  project.get('name') # AtomXCLO contains  the name of the project plus the org name which raises the error
+        name =  name_atomx.replace('AtomXCLO/', '')
+        path =  project.get('path')
         revision = project.get('revision')
         if revision is None:
             for remote in remotes:
