@@ -11,6 +11,7 @@ PRODUCT_PACKAGES += \
     AtomXSettingsOverlay \
     AtomXSettingsProviderOverlay \
     AtomXSystemUIOverlay \
+    AndroidBlackThemeOverlay \
     FontGoogleSansLatoOverlay \
     FontHarmonySansOverlay \
     FontInterOverlay \
