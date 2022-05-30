@@ -44,6 +44,10 @@ PRODUCT_PACKAGES += \
     libvndfwk_detect_jni.qti.vendor \
     libqti_vndfwk_detect.vendor
 
+# Repainter Service
+PRODUCT_PACKAGES += \
+    RepainterServicePriv
+
 # WiFi
 PRODUCT_PACKAGES += \
     libwpa_client
