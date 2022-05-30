@@ -4,6 +4,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# Camera
+PRODUCT_PACKAGES += \
+    Camera
+
 # Curl
 PRODUCT_PACKAGES += \
     curl
