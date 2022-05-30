@@ -1,0 +1,13 @@
+//
+// Copyright (C) 2022 The AtomX Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+android_app_import {
+    apk: "Camera.apk",
+    name: "Camera",
+    overrides: ["Camera2"],
+    presigned: true,
+    product_specific: true,
+}
