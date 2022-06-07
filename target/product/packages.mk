@@ -52,6 +52,34 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     RepainterServicePriv
 
+# Telephony - AOSP
+PRODUCT_PACKAGES += \
+    CellBroadcastReceiver \
+    Stk
+
+# Telephony - CLO
+PRODUCT_PACKAGES += \
+    extphonelib \
+    extphonelib-product \
+    extphonelib.xml \
+    extphonelib_product.xml \
+    ims-ext-common \
+    ims_ext_common.xml \
+    tcmiface \
+    telephony-ext \
+    qti-telephony-hidl-wrapper \
+    qti-telephony-hidl-wrapper-prd \
+    qti_telephony_hidl_wrapper.xml \
+    qti_telephony_hidl_wrapper_prd.xml \
+    qti-telephony-utils \
+    qti-telephony-utils-prd \
+    qti_telephony_utils.xml \
+    qti_telephony_utils_prd.xml
+
+PRODUCT_BOOT_JARS += \
+    tcmiface \
+    telephony-ext
+
 # WiFi
 PRODUCT_PACKAGES += \
     libwpa_client
