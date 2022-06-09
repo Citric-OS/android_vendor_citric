@@ -52,11 +52,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     RepainterServicePriv
 
-# Telephony - AOSP
-PRODUCT_PACKAGES += \
-    CellBroadcastReceiver \
-    Stk
-
 # Telephony - CLO
 PRODUCT_PACKAGES += \
     extphonelib \
