@@ -84,9 +84,6 @@ PRODUCT_COPY_FILES += \
     vendor/atomx/target/config/apns-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml \
     vendor/atomx/target/config/sensitive_pn.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/sensitive_pn.xml
 
-# Set compiler filter "verify" and disable AOT-compilation in dexpreopt
-RELAX_USES_LIBRARY_CHECK := true
-
 # Skip boot JAR checks
 SKIP_BOOT_JARS_CHECK := true
 
