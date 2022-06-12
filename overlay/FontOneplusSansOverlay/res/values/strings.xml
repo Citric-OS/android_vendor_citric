@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+** Copyright (C) 2022 The AtomX Project
+**
+** SPDX-License-Identifier: Apache-2.0
+*/
+-->
+<resources>
+    <!-- Headline / Body font OnePlus Sans overlay -->
+    <string name="font_oneplussans_overlay" translatable="false">OnePlus Sans</string>
+</resources>
