@@ -18,4 +18,5 @@ PRODUCT_PACKAGES += \
     FontManropeOverlay \
     FontRobotoOverlay \
     FontUrbanistOverlay \
+    FontOneplusSansOverlay \
     PixelLauncherIconsOverlay
