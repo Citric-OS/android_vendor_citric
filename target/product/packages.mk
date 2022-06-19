@@ -18,6 +18,10 @@ PRODUCT_PACKAGES += \
     FaceUnlockService
 endif
 
+# GameSpace
+PRODUCT_PACKAGES += \
+    GameSpace
+
 # HIDL
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
