@@ -63,6 +63,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     RepainterServicePriv
 
+# Telephony - AOSP
+PRODUCT_PACKAGES += \
+    Stk
+
 # Telephony - CLO
 PRODUCT_PACKAGES += \
     extphonelib \
