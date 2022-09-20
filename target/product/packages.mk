@@ -19,6 +19,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     curl
 
+# Exfat FS
+PRODUCT_PACKAGES += \
+    fsck.exfat \
+    mkfs.exfat
+
 # Face Unlock
 ifeq ($(TARGET_FACE_UNLOCK_SUPPORTED),true)
 PRODUCT_PACKAGES += \
