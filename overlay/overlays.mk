@@ -12,13 +12,12 @@ PRODUCT_PACKAGES += \
     AtomXSettingsProviderOverlay \
     AtomXSystemUIOverlay \
     AndroidBlackThemeOverlay \
-    FontGoogleSansLatoOverlay \
+    FontGoogleSansOverlay \
     FontHarmonySansOverlay \
     FontInterOverlay \
     FontManropeOverlay \
     FontOneplusSansOverlay \
     FontOppoSansOverlay \
-    FontRobotoOverlay \
     FontUrbanistOverlay \
     PixelLauncherIconsOverlay \
     IconPackCircularAndroidOverlay \

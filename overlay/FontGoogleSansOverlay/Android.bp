@@ -5,8 +5,8 @@
 //
 
 runtime_resource_overlay {
-    name: "FontRobotoOverlay",
+    name: "FontGoogleSansOverlay",
     product_specific: true,
     sdk_version: "current",
-    theme: "FontRoboto",
+    theme: "FontGoogleSans",
 }
