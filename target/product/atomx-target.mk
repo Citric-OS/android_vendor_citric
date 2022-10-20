@@ -39,9 +39,9 @@ $(call inherit-product, vendor/qcom/sdclang/config/SnapdragonClang.mk)
 $(call inherit-product, vendor/google/gms/products/gms.mk)
 
 ifeq ($(TARGET_FLATTEN_APEX), false)
-$(call inherit-product-if-exists, vendor/google/modules/build/mainline_modules_s.mk)
+$(call inherit-product-if-exists, vendor/google/modules/build/mainline_modules.mk)
 else
-$(call inherit-product-if-exists, vendor/google/modules/build/mainline_modules_s_flatten_apex.mk)
+$(call inherit-product-if-exists, vendor/google/modules/build/mainline_modules_flatten_apex.mk)
 endif
 
 ifneq ($(wildcard vendor/google/modules/.),)
