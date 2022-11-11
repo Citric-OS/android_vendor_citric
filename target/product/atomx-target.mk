@@ -145,10 +145,6 @@ PRODUCT_SYSTEM_PROPERTIES += \
 # Move Wi-Fi modules to vendor
 PRODUCT_VENDOR_MOVE_ENABLED := true
 
-# Neural Network
-PRODUCT_PACKAGES += \
-    libprotobuf-cpp-full-rtti
-
 # Optimize everything for preopt
 PRODUCT_DEX_PREOPT_DEFAULT_COMPILER_FILTER := everything
 
@@ -172,6 +168,10 @@ PRODUCT_COPY_FILES += \
 # Pre-optimization
 PRODUCT_DEXPREOPT_SPEED_APPS += \
     SystemUI
+
+# Protobuf - Workaround for prebuilt Qualcomm HAL
+PRODUCT_PACKAGES += \
+    libprotobuf-cpp-full-3.9.1-vendorcompat
 
 # QTI VNDK Framework Detect
 PRODUCT_PACKAGES += \
