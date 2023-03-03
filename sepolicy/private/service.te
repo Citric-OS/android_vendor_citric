@@ -6,3 +6,6 @@ type custom_globalactions_service, system_api_service, system_server_service, se
 
 # App lock
 type app_lock_service, system_api_service, system_server_service, service_manager_type;
+
+# Lineage
+type lineage_health_interface_service, system_api_service, system_server_service, service_manager_type;

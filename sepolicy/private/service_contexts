@@ -9,3 +9,6 @@ customglobalactions                         u:object_r:custom_globalactions_serv
 
 # App lock
 app_lock                                    u:object_r:app_lock_service:s0
+
+# Lineage
+lineagehealth                               u:object_r:lineage_health_interface_service:s0
