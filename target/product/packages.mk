@@ -42,7 +42,7 @@ PRODUCT_PACKAGES += \
 
 # Theme Picker
 PRODUCT_PACKAGES += \
-    ThemePicker
+    AtomXThemePicker
 
 # Gestures
 PRODUCT_PACKAGES += \
