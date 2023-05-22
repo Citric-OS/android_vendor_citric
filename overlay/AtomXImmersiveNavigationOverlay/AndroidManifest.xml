@@ -10,6 +10,7 @@
         package="co.atomx.overlay.systemui.immnav.gestural"
         android:versionCode="1"
         android:versionName="1.0">
+
     <overlay android:targetPackage="android"
         android:category="com.android.internal.navigation_bar_mode"
         android:priority="1"/>

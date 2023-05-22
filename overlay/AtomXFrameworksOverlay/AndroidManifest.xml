@@ -9,6 +9,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="android.atomx.overlay">
 
+    <application android:hasCode="false"/>
+
     <overlay
         android:isStatic="true"
         android:priority="600"
