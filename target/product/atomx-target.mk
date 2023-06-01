@@ -104,6 +104,17 @@ $(call inherit-product, device/qcom/common/common.mk)
 # Include definitions for Snapdragon Clang
 $(call inherit-product, vendor/qcom/sdclang/config/SnapdragonClang.mk)
 
+# Include fs tools for dedicated recovery and ramdisk partitions.
+PRODUCT_PACKAGES += \
+    e2fsck_ramdisk \
+    resize2fs_ramdisk \
+    tune2fs_ramdisk
+
+PRODUCT_PACKAGES += \
+    e2fsck.recovery \
+    resize2fs.recovery \
+    tune2fs.recovery
+
 # Include GMS, Mainline modules and Pixel features
 $(call inherit-product, vendor/google/gms/products/gms.mk)
 
