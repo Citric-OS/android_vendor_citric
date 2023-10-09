@@ -122,3 +122,23 @@ surfaceflinger_udfps_lib {
         },
     },
 }
+
+cc_defaults {
+    name: "atomx_aidl_defaults",
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+    ],
+    static_libs: [
+        "libbase",
+    ],
+    target: {
+        host: {
+            cflags: [
+                "-O0",
+                "-g",
+            ],
+        },
+    },
+}
