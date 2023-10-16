@@ -175,7 +175,8 @@ PRODUCT_DEXPREOPT_SPEED_APPS += \
 
 # Protobuf - Workaround for prebuilt Qualcomm HAL
 PRODUCT_PACKAGES += \
-    libprotobuf-cpp-full-3.9.1-vendorcompat
+    libprotobuf-cpp-full-3.9.1-vendorcompat \
+    libprotobuf-cpp-lite-3.9.1-vendorcompat
 
 # QTI VNDK Framework Detect
 PRODUCT_PACKAGES += \
