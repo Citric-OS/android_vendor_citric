@@ -28,7 +28,7 @@ PRODUCT_PACKAGES += \
 
 # Disable async MTE on system_server
 PRODUCT_SYSTEM_EXT_PROPERTIES += \
-    arm64.memtag.process.system_server=off
+    persist.memtag.system_server=off
 
 # Disable blur on app-launch
 PRODUCT_SYSTEM_EXT_PROPERTIES += \
