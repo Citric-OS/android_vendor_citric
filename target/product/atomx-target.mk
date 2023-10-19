@@ -43,6 +43,10 @@ PRODUCT_SYSTEM_EXT_PROPERTIES += \
     ro.egl.blobcache.multifile=true \
     ro.egl.blobcache.multifile_limit=33554432
 
+# Enable allowlist for some aosp packages that should not be scanned in a "stopped" state
+# Some CTS test case failed after enabling feature config_stopSystemPackagesByDefault
+PRODUCT_PACKAGES += initial-package-stopped-states-aosp.xml
+
 # Enable dex2oat64 to do dexopt
 PRODUCT_SYSTEM_EXT_PROPERTIES += \
     dalvik.vm.dex2oat64.enabled=true
