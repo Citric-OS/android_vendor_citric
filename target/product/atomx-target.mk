@@ -42,6 +42,11 @@ PRODUCT_PRODUCT_PROPERTIES += \
 # Don't dexpreopt prebuilts. (For GMS).
 DONT_DEXPREOPT_PREBUILTS := true
 
+# EGL - Blobcache configuration
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.egl.blobcache.multifile=true \
+    ro.egl.blobcache.multifile_limit=33554432
+
 # Enable dex2oat64 to do dexopt
 PRODUCT_SYSTEM_EXT_PROPERTIES += \
     dalvik.vm.dex2oat64.enabled=true
