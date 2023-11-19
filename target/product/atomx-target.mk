@@ -136,6 +136,9 @@ else
 $(call inherit-product-if-exists, vendor/google/modules/build/mainline_modules_flatten_apex.mk)
 endif
 
+# Include Microsoft prebuilts makefile
+$(call inherit-product, vendor/atomx/prebuilt/microsoft/packages.mk)
+
 # Include Overlay makefile
 $(call inherit-product, vendor/atomx/overlay/overlays.mk)
 
