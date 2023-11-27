@@ -5,3 +5,6 @@ allow system_server pocket_service:service_manager { add find };
 
 # Set tethering properties
 set_prop(system_server, device_config_tethering_prop)
+
+# CachedAppOptimizer
+allow system_server zygote_tmpfs:file rw_file_perms;
