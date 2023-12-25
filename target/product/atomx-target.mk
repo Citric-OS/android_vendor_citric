@@ -174,7 +174,8 @@ PRODUCT_COPY_FILES += \
 
 # Pre-optimization
 PRODUCT_DEXPREOPT_SPEED_APPS += \
-    SystemUI
+    Launcher3QuickStep \
+	SystemUI
 
 # Protobuf - Workaround for prebuilt Qualcomm HAL
 PRODUCT_PACKAGES += \
