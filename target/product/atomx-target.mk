@@ -199,10 +199,6 @@ PRODUCT_PACKAGES += \
     libvndfwk_detect_jni.qti.vendor \
     libqti_vndfwk_detect.vendor
 
-# Repainter Service
-PRODUCT_PACKAGES += \
-    RepainterServicePriv
-
 ifneq ($(TARGET_NO_TELEPHONY), true)
 # Sensitive phone numbers and APN configurations
 PRODUCT_COPY_FILES += \
