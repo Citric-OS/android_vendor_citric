@@ -136,10 +136,8 @@ PRODUCT_PACKAGES += \
 # Include GMS, Mainline modules and Pixel features
 $(call inherit-product, vendor/google/gms/products/gms.mk)
 
-ifeq ($(TARGET_FLATTEN_APEX), false)
+ifneq ($(TARGET_EXCLUDE_GMODULES), true)
 $(call inherit-product-if-exists, vendor/google/modules/build/mainline_modules.mk)
-else
-$(call inherit-product-if-exists, vendor/google/modules/build/mainline_modules_flatten_apex.mk)
 endif
 
 # Include Microsoft prebuilts makefile
