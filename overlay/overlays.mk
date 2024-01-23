@@ -8,6 +8,8 @@
 PRODUCT_PACKAGES += \
     AtomXFrameworksOverlay \
     AtomXImmersiveNavigationOverlay \
+    AtomXNetworkStackOverlay \
+    AtomXNetworkStackMainlineOverlay \
     AtomXSettingsOverlay \
     AtomXSettingsProviderOverlay \
     AtomXSystemUIOverlay \
