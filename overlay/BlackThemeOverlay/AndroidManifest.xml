@@ -13,7 +13,7 @@
 
     <overlay
         android:targetPackage="android"
-        android:category="android.theme.customization.theme_style"
+        android:category="android.theme.customization.system_palette"
         android:priority="2"/>
 
     <application android:label="@string/android_overlay_black" android:hasCode="false"/>
