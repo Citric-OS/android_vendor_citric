@@ -176,6 +176,10 @@ PRODUCT_COPY_FILES += \
     vendor/atomx/target/config/permissions/default_permissions_com.google.android.deskclock.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default_permissions_com.google.android.deskclock.xml \
     vendor/atomx/target/config/permissions/privapp-permissions-hotword.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-hotword.xml
 
+# Preinstalled Packages
+PRODUCT_COPY_FILES += \
+    vendor/atomx/target/config/preinstalled-packages-atomx.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/preinstalled-packages-atomx.xml
+
 # Pre-optimization
 PRODUCT_DEXPREOPT_SPEED_APPS += \
     Launcher3QuickStep \
