@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 The AtomX Project
+# Copyright (C) 2024 The AtomX Project
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -10,14 +10,64 @@ $(call inherit-product, vendor/atomx/target/product/version.mk)
 # Bootanimation
 $(call inherit-product, vendor/atomx/bootanimation/bootanimation.mk)
 
+# Camera
+PRODUCT_PACKAGES += \
+    Camera
+
+# Compile SystemUI on device with `speed`.
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.systemuicompilerfilter=speed
+
+# Curl
+PRODUCT_PACKAGES += \
+    curl
+
+# Disable async MTE on system_server
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    arm64.memtag.process.system_server=off
+
+# Disable blur on app-launch
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    ro.launcher.blur.appLaunch=0
+
+# Disable RescueParty due to high risk of data loss
+PRODUCT_PRODUCT_PROPERTIES += \
+    persist.sys.disable_rescue=true
+
 # Don't dexpreopt prebuilts. (For GMS).
 DONT_DEXPREOPT_PREBUILTS := true
+
+# Enable dex2oat64 to do dexopt
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    dalvik.vm.dex2oat64.enabled=true
+
+# Enable Navigation gestures.
+PRODUCT_PRODUCT_PROPERTIES += \
+    ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.gestural
+
+# Enable one-handed mode
+PRODUCT_PRODUCT_PROPERTIES += \
+    ro.support_one_handed_mode=true
+
+# Enable whole-program R8 Java optimizations for SystemUI and system_server,
+# but also allow explicit overriding for testing and development.
+SYSTEM_OPTIMIZE_JAVA ?= true
+SYSTEMUI_OPTIMIZE_JAVA ?= true
+
+# Exfat FS
+PRODUCT_PACKAGES += \
+    fsck.exfat \
+    mkfs.exfat
 
 # Face Unlock
 TARGET_FACE_UNLOCK_SUPPORTED ?= true
 ifeq ($(TARGET_FACE_UNLOCK_SUPPORTED),true)
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.biometrics.face.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.hardware.biometrics.face.xml
+PRODUCT_PACKAGES += \
+    FaceUnlockService
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+    ro.face_unlock_service.enabled=$(TARGET_FACE_UNLOCK_SUPPORTED)
 endif
 
 # Fonts
@@ -25,9 +75,23 @@ PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,vendor/atomx/prebuilts/fonts/,$(TARGET_COPY_OUT_PRODUCT)/fonts) \
     vendor/atomx/target/config/fonts_customization.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/fonts_customization.xml
 
+# GameSpace
+PRODUCT_PACKAGES += \
+    GameSpace
+
+# Gestures
+PRODUCT_PACKAGES += \
+    vendor.aospa.power-service
+
 # HIDL
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
      vendor/atomx/target/config/atomx_vendor_framework_compatibility_matrix.xml
+
+PRODUCT_PACKAGES += \
+    android.hidl.base@1.0 \
+    android.hidl.manager@1.0 \
+    android.hidl.base@1.0.vendor \
+    android.hidl.manager@1.0.vendor
 
 # Include Common Qualcomm Device Tree
 $(call inherit-product, device/qcom/common/common.mk)
@@ -35,7 +99,7 @@ $(call inherit-product, device/qcom/common/common.mk)
 # Include definitions for Snapdragon Clang
 $(call inherit-product, vendor/qcom/sdclang/config/SnapdragonClang.mk)
 
-# Include GMS, Modules and Pixel features
+# Include GMS, Mainline modules and Pixel features
 $(call inherit-product, vendor/google/gms/products/gms.mk)
 
 ifeq ($(TARGET_FLATTEN_APEX), false)
@@ -55,20 +119,34 @@ endif
 # Include Overlay makefile
 $(call inherit-product, vendor/atomx/overlay/overlays.mk)
 
-# Include Packages makefile
-$(call inherit-product, vendor/atomx/target/product/packages.mk)
-
-# Include Properties makefile
-$(call inherit-product, vendor/atomx/target/product/properties.mk)
-
 # Include SEPolicy makefile.
 $(call inherit-product, vendor/atomx/sepolicy/sepolicy.mk)
+
+# Increase volume level steps
+PRODUCT_SYSTEM_PROPERTIES += \
+    ro.config.media_vol_steps=30
 
 # Move Wi-Fi modules to vendor
 PRODUCT_VENDOR_MOVE_ENABLED := true
 
+# Neural Network
+PRODUCT_PACKAGES += \
+    libprotobuf-cpp-full-rtti
+
 # Optimize everything for preopt
 PRODUCT_DEX_PREOPT_DEFAULT_COMPILER_FILTER := everything
+
+# Optimise package manager dex flags
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    pm.dexopt.boot=verify \
+    pm.dexopt.first-boot=quicken \
+    pm.dexopt.install=speed-profile \
+    pm.dexopt.bg-dexopt=everything
+
+ifneq ($(AB_OTA_PARTITIONS),)
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    pm.dexopt.ab-ota=quicken
+endif
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -79,9 +157,20 @@ PRODUCT_COPY_FILES += \
 PRODUCT_DEXPREOPT_SPEED_APPS += \
     SystemUI
 
-# Compile SystemUI on device with `speed`.
-PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.systemuicompilerfilter=speed
+# QTI VNDK Framework Detect
+PRODUCT_PACKAGES += \
+    libvndfwk_detect_jni.qti \
+    libqti_vndfwk_detect \
+    libqti_vndfwk_detect_system \
+    libqti_vndfwk_detect_vendor \
+    libvndfwk_detect_jni.qti_system \
+    libvndfwk_detect_jni.qti_vendor \
+    libvndfwk_detect_jni.qti.vendor \
+    libqti_vndfwk_detect.vendor
+
+# Repainter Service
+PRODUCT_PACKAGES += \
+    RepainterServicePriv
 
 # Sensitive phone numbers and APN configurations
 PRODUCT_COPY_FILES += \
@@ -93,7 +182,33 @@ PRODUCT_COPY_FILES += \
 # leave less information available via JDWP.
 PRODUCT_MINIMIZE_JAVA_DEBUG_INFO := true
 
-# Enable whole-program R8 Java optimizations for SystemUI and system_server,
-# but also allow explicit overriding for testing and development.
-SYSTEM_OPTIMIZE_JAVA ?= true
-SYSTEMUI_OPTIMIZE_JAVA ?= true
+# Telephony - AOSP
+PRODUCT_PACKAGES += \
+    Stk
+
+# Telephony - CLO
+PRODUCT_PACKAGES += \
+    extphonelib \
+    extphonelib-product \
+    extphonelib.xml \
+    extphonelib_product.xml \
+    ims-ext-common \
+    ims_ext_common.xml \
+    tcmiface \
+    telephony-ext \
+    qti-telephony-hidl-wrapper \
+    qti-telephony-hidl-wrapper-prd \
+    qti_telephony_hidl_wrapper.xml \
+    qti_telephony_hidl_wrapper_prd.xml \
+    qti-telephony-utils \
+    qti-telephony-utils-prd \
+    qti_telephony_utils.xml \
+    qti_telephony_utils_prd.xml
+
+PRODUCT_BOOT_JARS += \
+    tcmiface \
+    telephony-ext
+
+# WiFi
+PRODUCT_PACKAGES += \
+    libwpa_client
