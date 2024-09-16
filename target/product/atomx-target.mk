@@ -59,6 +59,10 @@ PRODUCT_PRODUCT_PROPERTIES += \
 SYSTEM_OPTIMIZE_JAVA ?= true
 SYSTEMUI_OPTIMIZE_JAVA ?= true
 
+# Enforce privapp-permissions whitelist.
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+    ro.control_privapp_permissions=enforce
+
 # Exfat FS
 PRODUCT_PACKAGES += \
     fsck.exfat \
