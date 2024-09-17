@@ -1,46 +1,72 @@
 #
-# Copyright (C) 2022 The AtomX Project
+# Copyright (C) 2024 The AtomX Project
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# Versioning System
-ATOMX_CODENAME := Scarlet
-ATOMX_MAJOR_VERSION := 1
-ATOMX_BUILD_VARIANT := Beta
-ATOMX_BUILD_TYPE ?= UNOFFICIAL
+#
+# Handle various build version information.
+#
+# Guarantees that the following are defined:
+#     ATOMX_MAJOR_VERSION
+#     ATOMX_MINOR_VERSION
+#     ATOMX_BUILD_VARIANT
+#
 
-# AtomX Release
-ifeq ($(ATOMX_BUILD_TYPE), OFFICIAL)
-  OFFICIAL_DEVICES = $(shell cat vendor/atomx/products/atomx.devices)
-  FOUND_DEVICE =  $(filter $(ATOMX_BUILD), $(OFFICIAL_DEVICES))
-    ifeq ($(FOUND_DEVICE),$(ATOMX_BUILD))
-      ATOMX_BUILD_TYPE := OFFICIAL
-    else
-      ATOMX_BUILD_TYPE := UNOFFICIAL
-      $(error Device is not official "$(ATOMX_BUILD)")
-    endif
+# This is the global ATOMX version flavor that determines the focal point
+# behind our releases. This is bundled alongside $(ATOMX_MINOR_VERSION)
+# and only changes per major Android releases.
+ATOMX_MAJOR_VERSION := void
+
+# The version code is the upgradable portion during the cycle of
+# every major Android release. Each version code upgrade indicates
+# our own major release during each lifecycle.
+# It is based in three parts
+# X for SPL changes, Y for week, and Z for hotfix.
+ifdef ATOMX_BUILDVERSION
+    ATOMX_MINOR_VERSION := $(ATOMX_BUILDVERSION)
 endif
 
-# System version
-TARGET_PRODUCT_SHORT := $(subst atomx_,,$(ATOMX_BUILD_TYPE))
+# Build Variants
+#
+# Alpha: Development / Test releases
+# Beta: Public releases with CI
+# Stable: Final Product | No Tagging
+OFFICIAL_DEVICES = $(shell cat vendor/atomx/products/atomx.devices)
+FOUND_DEVICE =  $(filter $(ATOMX_BUILD), $(OFFICIAL_DEVICES))
+ifdef ATOMX_BUILDTYPE
+  ifeq ($(FOUND_DEVICE),$(ATOMX_BUILD))
+    ifeq ($(ATOMX_BUILDTYPE), ALPHA)
+        ATOMX_BUILD_VARIANT := alpha
+    else ifeq ($(ATOMX_BUILDTYPE), BETA)
+        ATOMX_BUILD_VARIANT := beta
+    else ifeq ($(ATOMX_BUILDTYPE), STABLE)
+        ATOMX_BUILD_VARIANT := stable
+    endif
+  else
+    ATOMX_BUILD_VARIANT := unofficial
+  endif
+else
+ATOMX_BUILD_VARIANT := unofficial
+endif
 
-ATOMX_DATE_YEAR := $(shell date -u +%Y)
-ATOMX_DATE_MONTH := $(shell date -u +%m)
-ATOMX_DATE_DAY := $(shell date -u +%d)
-ATOMX_DATE_HOUR := $(shell date -u +%H)
-ATOMX_DATE_MINUTE := $(shell date -u +%M)
+# Build Date
+BUILD_DATE := $(shell date -u +%Y%m%d)
 
-ATOMX_BUILD_DATE := $(ATOMX_DATE_YEAR)$(ATOMX_DATE_MONTH)$(ATOMX_DATE_DAY)-$(ATOMX_DATE_HOUR)$(ATOMX_DATE_MINUTE)
-ATOMX_BUILD_VERSION := $(ATOMX_BUILD_VARIANT)-$(ATOMX_MAJOR_VERSION)
-ATOMX_VERSION := AtomX-$(ATOMX_CODENAME)-$(ATOMX_BUILD_VERSION)-$(ATOMX_BUILD)-$(ATOMX_BUILD_TYPE)-$(ATOMX_BUILD_DATE)
+# AtomX Version
+ATOMX_VERSION := $(ATOMX_MAJOR_VERSION)-
+ATOMX_DISPLAY_VERSION := $(shell V1=$(ATOMX_MAJOR_VERSION); echo -n $${V1^})
 
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-  ro.atomx.codename=$(ATOMX_CODENAME) \
-  ro.atomx.device=$(ATOMX_BUILD) \
-  ro.atomx.version=$(ATOMX_VERSION) \
-  ro.atomx.version.major=$(ATOMX_MAJOR_VERSION) \
-  ro.atomx.build.date=$(ATOMX_BUILD_DATE) \
-  ro.atomx.build.type=$(ATOMX_BUILD_TYPE) \
-  ro.atomx.build.variant=$(ATOMX_BUILD_VARIANT) \
-  ro.atomx.build.version=$(ATOMX_BUILD_VERSION)
+ifeq ($(filter stable,$(ATOMX_BUILD_VARIANT)),)
+    ATOMX_VERSION += $(ATOMX_BUILD_VARIANT)-
+    ATOMX_DISPLAY_VERSION += $(shell V1=$(ATOMX_BUILD_VARIANT); echo -n $${V1^})
+else
+    ATOMX_VERSION += $(ATOMX_MINOR_VERSION)-
+    ATOMX_DISPLAY_VERSION += $(ATOMX_MINOR_VERSION)
+endif
+
+# Add BUILD_DATE for zip naming
+ATOMX_VERSION += $(ATOMX_BUILD)-$(BUILD_DATE)
+
+# Remove unwanted characters for zip naming
+ATOMX_VERSION := $(shell echo -n $(ATOMX_VERSION) | tr -d '[:space:]')

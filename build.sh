@@ -36,6 +36,7 @@ function showHelpAndExit {
         echo -e "${CLR_BLD_BLU}  -c, --clean           Wipe the tree before building${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -i, --installclean    Dirty build - Use 'installclean'${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -r, --repo-sync       Sync before building${CLR_RST}"
+        echo -e "${CLR_BLD_BLU}  -v, --variant         AtomX variant - Can be alpha, beta or stable${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -t, --build-type      Specify build type${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -j, --jobs            Specify jobs/threads to use${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -m, --module          Build a specific module${CLR_RST}"
@@ -44,12 +45,13 @@ function showHelpAndExit {
         echo -e "${CLR_BLD_BLU}  -b, --backup-unsigned Store a copy of unsigned package along with signed${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -d, --delta           Generate a delta ota from the specified target_files zip${CLR_RST}"
         echo -e "${CLR_BLD_BLU}  -z, --imgzip          Generate fastboot flashable image zip from signed target_files${CLR_RST}"
+        echo -e "${CLR_BLD_BLU}  -n, --version         Specify build minor version (number)${CLR_RST}"
         exit 1
 }
 
 # Setup getopt.
-long_opts="help,clean,installclean,repo-sync,build-type:,jobs:,module:,sign-keys:,pwfile:,backup-unsigned,delta:,imgzip"
-getopt_cmd=$(getopt -o hcirt:j:m:s:p:bd:z --long "$long_opts" \
+long_opts="help,clean,installclean,repo-sync,variant:,build-type:,jobs:,module:,sign-keys:,pwfile:,backup-unsigned,delta:,imgzip,version:"
+getopt_cmd=$(getopt -o hcirv:t:j:m:s:p:bd:zn: --long "$long_opts" \
             -n $(basename $0) -- "$@") || \
             { echo -e "${CLR_BLD_RED}\nError: Getopt failed. Extra args\n${CLR_RST}"; showHelpAndExit; exit 1;}
 
@@ -61,6 +63,7 @@ while true; do
         -c|--clean|c|clean) FLAG_CLEAN_BUILD=y;;
         -i|--installclean|i|installclean) FLAG_INSTALLCLEAN_BUILD=y;;
         -r|--repo-sync|r|repo-sync) FLAG_SYNC=y;;
+        -v|--variant|v|variant) ATOMX_VARIANT="$2"; shift;;
         -t|--build-type|t|build-type) BUILD_TYPE="$2"; shift;;
         -j|--jobs|j|jobs) JOBS="$2"; shift;;
         -m|--module|m|module) MODULES+=("$2"); echo $2; shift;;
@@ -69,6 +72,7 @@ while true; do
         -b|--backup-unsigned|b|backup-unsigned) FLAG_BACKUP_UNSIGNED=y;;
         -d|--delta|d|delta) DELTA_TARGET_FILES="$2"; shift;;
         -z|--imgzip|img|imgzip) FLAG_IMG_ZIP=y;;
+        -n|--version|n|version) ATOMX_USER_VERSION="$2"; shift;;
         --) shift; break;;
     esac
     shift
@@ -80,7 +84,6 @@ if [ $# -eq 0 ]; then
     showHelpAndExit
 fi
 export DEVICE="$1"; shift
-export FILE_NAME_TAG=eng.nobody
 
 # Make sure we are running on 64-bit before carrying on with anything
 ARCH=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
@@ -97,6 +100,32 @@ DIR_ROOT=$(pwd)
 if [ ! -d "$DIR_ROOT/vendor/atomx" ]; then
         echo -e "${CLR_BLD_RED}error: insane root directory ($DIR_ROOT)${CLR_RST}"
         exit 1
+fi
+
+# Setup ATOMX variant if specified
+if [ $ATOMX_VARIANT ]; then
+    ATOMX_VARIANT=`echo $ATOMX_VARIANT |  tr "[:upper:]" "[:lower:]"`
+    if [ "${ATOMX_VARIANT}" = "stable" ]; then
+        export ATOMX_BUILDTYPE=STABLE
+    elif [ "${ATOMX_VARIANT}" = "beta" ]; then
+        export ATOMX_BUILDTYPE=BETA
+    elif [ "${ATOMX_VARIANT}" = "alpha" ]; then
+        export ATOMX_BUILDTYPE=ALPHA
+    else
+        echo -e "${CLR_BLD_RED} Unknown AtomX variant - use alpha, beta or stable${CLR_RST}"
+        exit 1
+    fi
+fi
+
+# Setup ATOMX version if specified
+if [ $ATOMX_USER_VERSION ]; then
+    # Check if it is a number
+    if [[ $ATOMX_USER_VERSION =~ ^[0-9]{1,3}(\.[0-9]{1,2})?(\.[0-9]{1,2})?$ ]]; then
+        export ATOMX_BUILDVERSION=$ATOMX_USER_VERSION
+    else
+        echo -e "${CLR_BLD_RED}Invalid AtomX version - use any non-negative number${CLR_RST}"
+        exit 1
+    fi
 fi
 
 # Initializationizing!
@@ -121,8 +150,10 @@ if [ -z "$JOBS" ]; then
 fi
 
 # Grab the build version
-ATOMX_DISPLAY_VERSION="$(cat $DIR_ROOT/vendor/atomx/target/product/version.mk | grep 'ATOMX_CODENAME := *' | sed 's/.*= //') \
-$(cat $DIR_ROOT/vendor/atomx/target/product/version.mk | grep 'ATOMX_MAJOR_VERSION := *' | sed 's/.*= //')"
+ATOMX_DISPLAY_VERSION="$(cat $DIR_ROOT/vendor/atomx/target/product/version.mk | grep 'ATOMX_MAJOR_VERSION := *' | sed 's/.*= //')"
+if [ $ATOMX_BUILDVERSION ]; then
+    ATOMX_DISPLAY_VERSION+="$ATOMX_BUILDVERSION"
+fi
 
 # Prep for a clean build, if requested so
 if [ "$FLAG_CLEAN_BUILD" = 'y' ]; then
@@ -184,16 +215,16 @@ elif [ "${KEY_MAPPINGS}" ]; then
 
     echo -e "${CLR_BLD_BLU}Signing target files apks${CLR_RST}"
     sign_target_files_apks -o -d $KEY_MAPPINGS \
-        "$OUT"/obj/PACKAGING/target_files_intermediates/atomx_$DEVICE-target_files-$FILE_NAME_TAG.zip \
-        $ATOMX_VERSION-signed-target_files-$FILE_NAME_TAG.zip
+        "$OUT"/obj/PACKAGING/target_files_intermediates/atomx_$DEVICE-target_files.zip \
+        atomx-$ATOMX_VERSION-signed-target_files.zip
 
     checkExit
 
     echo -e "${CLR_BLD_BLU}Generating signed install package${CLR_RST}"
     ota_from_target_files -k $KEY_MAPPINGS/releasekey \
         --block ${INCREMENTAL} \
-        $ATOMX_VERSION-signed-target_files-$FILE_NAME_TAG.zip \
-        $ATOMX_VERSION.zip
+        atomx-$ATOMX_VERSION-signed-target_files.zip \
+        atomx-$ATOMX_VERSION.zip
 
     checkExit
 
@@ -205,16 +236,16 @@ elif [ "${KEY_MAPPINGS}" ]; then
         fi
         ota_from_target_files -k $KEY_MAPPINGS/releasekey \
             --block --incremental_from $DELTA_TARGET_FILES \
-            $ATOMX_VERSION-signed-target_files-$FILE_NAME_TAG.zip \
-            $ATOMX_VERSION-delta.zip
+            atomx-$ATOMX_VERSION-signed-target_files.zip \
+            atomx-$ATOMX_VERSION-delta.zip
         checkExit
     fi
 
     if [ "$FLAG_IMG_ZIP" = 'y' ]; then
         echo -e "${CLR_BLD_BLU}Generating signed fastboot package${CLR_RST}"
         img_from_target_files \
-            $ATOMX_VERSION-signed-target_files-$FILE_NAME_TAG.zip \
-            $ATOMX_VERSION-image.zip
+            atomx-$ATOMX_VERSION-signed-target_files.zip \
+            atomx-$ATOMX_VERSION-image.zip
         checkExit
     fi
 # Build rom package
@@ -225,15 +256,15 @@ elif [ "$FLAG_IMG_ZIP" = 'y' ]; then
 
     echo -e "${CLR_BLD_BLU}Generating install package${CLR_RST}"
     ota_from_target_files \
-        "$OUT"/obj/PACKAGING/target_files_intermediates/atomx_$DEVICE-target_files-$FILE_NAME_TAG.zip \
-        $ATOMX_VERSION.zip
+        "$OUT"/obj/PACKAGING/target_files_intermediates/atomx_$DEVICE-target_files.zip \
+        atomx-$ATOMX_VERSION.zip
 
     checkExit
 
     echo -e "${CLR_BLD_BLU}Generating fastboot package${CLR_RST}"
     img_from_target_files \
-        "$OUT"/obj/PACKAGING/target_files_intermediates/atomx_$DEVICE-target_files-$FILE_NAME_TAG.zip \
-        $ATOMX_VERSION-image.zip
+        "$OUT"/obj/PACKAGING/target_files_intermediates/atomx_$DEVICE-target_files.zip \
+        atomx-$ATOMX_VERSION-image.zip
 
     checkExit
 
@@ -242,8 +273,8 @@ else
 
     checkExit
 
-    cp -f $OUT/atomx_$DEVICE-ota-$FILE_NAME_TAG.zip $OUT/$ATOMX_VERSION.zip
-    echo "Package Complete: $OUT/$ATOMX_VERSION.zip"
+    cp -f $OUT/atomx_$DEVICE-ota.zip $OUT/atomx-$ATOMX_VERSION.zip
+    echo "Package Complete: $OUT/atomx-$ATOMX_VERSION.zip"
 fi
 echo -e ""
 
