@@ -26,14 +26,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_SYSTEM_EXT_PROPERTIES += \
     persist.memtag.system_server=off
 
-# Disable blur on app-launch
-PRODUCT_SYSTEM_EXT_PROPERTIES += \
-    debug.sf.frame_rate_multiple_threshold=60 \
-    ro.launcher.blur.appLaunch=0
-
 # Disable RescueParty due to high risk of data loss
 PRODUCT_PRODUCT_PROPERTIES += \
     persist.sys.disable_rescue=true
+
+# Display
+PRODUCT_SYSTEM_EXT_PROPERTIES += \
+    debug.sf.frame_rate_multiple_threshold=60
 
 # Don't dexpreopt prebuilts. (For GMS).
 DONT_DEXPREOPT_PREBUILTS := true
