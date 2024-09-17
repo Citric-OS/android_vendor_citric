@@ -7,5 +7,5 @@
 runtime_resource_overlay {
     name: "AtomXImmersiveNavigationOverlay",
     resource_dirs: ["res"],
-    product_specific: true,
+    system_ext_specific: true,
 }

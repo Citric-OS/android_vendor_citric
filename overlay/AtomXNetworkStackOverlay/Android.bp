@@ -1,12 +1,12 @@
 runtime_resource_overlay {
     name: "AtomXNetworkStackOverlay",
     certificate: "platform",
-    product_specific: true
+    system_ext_specific: true
 }
 
 runtime_resource_overlay {
     name: "AtomXNetworkStackMainlineOverlay",
     manifest: "AndroidGoogleManifest.xml",
     certificate: "platform",
-    product_specific: true
+    system_ext_specific: true
 }
