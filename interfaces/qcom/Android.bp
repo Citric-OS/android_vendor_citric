@@ -1,30 +1,15 @@
 //
-// Copyright (C) 2022 The AtomX Project
+// Copyright (C) 2024 The AtomX Project
 //
 // SPDX-License-Identifier: Apache-2.0
 //
 
 hidl_package_root {
-    name: "com.qualcomm.qti.bluetooth_audio",
-    path: "vendor/atomx/interfaces/qcom/bluetooth_audio",
+    name: "com.qualcomm.qti",
+    path: "vendor/atomx/interfaces/qcom",
 }
 
 hidl_package_root {
-    name: "vendor.qti.hardware.btconfigstore",
-    path: "vendor/atomx/interfaces/qcom/btconfigstore",
-}
-
-hidl_package_root {
-    name: "vendor.qti.hardware.capabilityconfigstore",
-    path: "vendor/atomx/interfaces/qcom/capabilityconfigstore",
-}
-
-hidl_package_root {
-    name: "vendor.qti.hardware.cryptfshw",
-    path: "vendor/atomx/interfaces/qcom/cryptfshw",
-}
-
-hidl_package_root {
-    name: "vendor.qti.hardware.fm",
-    path: "vendor/atomx/interfaces/qcom/fm",
+    name: "vendor.qti.hardware",
+    path: "vendor/atomx/interfaces/qcom",
 }
