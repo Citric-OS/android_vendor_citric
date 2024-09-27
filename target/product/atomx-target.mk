@@ -10,6 +10,9 @@ $(call inherit-product, vendor/atomx/target/product/version.mk)
 # Bootanimation
 $(call inherit-product, vendor/atomx/bootanimation/bootanimation.mk)
 
+# b/189477034: Bypass build time check on uses_libs until vendor fixes all their apps
+PRODUCT_BROKEN_VERIFY_USES_LIBRARIES := true
+
 # Camera
 PRODUCT_PACKAGES += \
     Camera
