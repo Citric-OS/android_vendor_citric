@@ -112,6 +112,10 @@ PRODUCT_PACKAGES += \
     android.hidl.base@1.0.vendor \
     android.hidl.manager@1.0.vendor
 
+# Htop
+PRODUCT_PACKAGES += \
+    htop
+
 # Include Common Qualcomm Device Tree
 $(call inherit-product, device/qcom/common/common.mk)
 
