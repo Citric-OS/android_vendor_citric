@@ -7,6 +7,10 @@
 # AtomX Versioning
 $(call inherit-product, vendor/atomx/target/product/version.mk)
 
+# AtomX Wallpapers
+PRODUCT_PACKAGES += \
+    AtomXCovers
+
 # Bootanimation
 $(call inherit-product, vendor/atomx/bootanimation/bootanimation.mk)
 
