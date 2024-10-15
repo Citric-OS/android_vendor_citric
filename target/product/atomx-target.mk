@@ -11,6 +11,10 @@ $(call inherit-product, vendor/atomx/target/product/version.mk)
 PRODUCT_PACKAGES += \
     AtomXCovers
 
+# AvatarPicker
+PRODUCT_PACKAGES += \
+    AvatarPicker
+
 # Bootanimation
 $(call inherit-product, vendor/atomx/bootanimation/bootanimation.mk)
 
